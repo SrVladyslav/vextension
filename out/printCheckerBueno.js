@@ -37,38 +37,38 @@ exports.checkPrintsInStagedFiles = checkPrintsInStagedFiles;
 const vscode = __importStar(require("vscode"));
 const path = __importStar(require("path"));
 const fs = __importStar(require("fs"));
-// Function that searches for `print` in modified files in the staging area and returns the line where it's found
+// Función que busca `print` en los archivos modificados en el área de staging y devuelve la línea donde se encuentra
 async function checkPrintsInStagedFiles() {
-    // Get the Git API
+    // Obtener la API de Git
     const git = vscode.extensions.getExtension('vscode.git')?.exports.getAPI(1);
     if (!git) {
         vscode.window.showErrorMessage('Git extension not found!');
         return;
     }
-    // Get the current repository
+    // Obtener el repositorio actual
     const repo = git.repositories[0];
     if (!repo) {
         vscode.window.showErrorMessage('No Git repository found.');
         return;
     }
-    // Get the staged files (modified files that are ready for commit)
-    const files = repo.state.indexChanges; // Staged files (not yet committed)
+    // Obtener los archivos en staging (archivos modificados que están listos para commit)
+    const files = repo.state.indexChanges; // Archivos en staging (aún no committeados)
     if (files.length === 0) {
         vscode.window.showInformationMessage('No files in staging to check.');
         return;
     }
     let filesWithPrints = [];
-    // Loop through the staged modified files
+    // Recorremos los archivos modificados en staging
     for (const file of files) {
         const filePath = file.uri.fsPath;
-        if (path.extname(filePath) === '.py') { // Only check .py (Python) files
-            // Read the file content line by line
+        if (path.extname(filePath) === '.py') { // Solo revisamos archivos .py (Python)
+            // Leemos el contenido del archivo línea por línea
             const content = fs.readFileSync(filePath, 'utf8');
             const lines = content.split('\n');
-            // Check each line if it contains `print(`
+            // Verificamos línea por línea si contiene un `print(`
             lines.forEach((line, index) => {
                 if (line.includes('print(')) {
-                    // If `print` is found, add it to the list with the line and the file
+                    // Si encuentra `print`, lo agrega a la lista junto con la línea y el archivo
                     filesWithPrints.push({
                         label: `${filePath}: Line ${index + 1} - ${line.trim()}`,
                         filePath: filePath,
@@ -79,18 +79,15 @@ async function checkPrintsInStagedFiles() {
             });
         }
     }
-    // If we found files with prints, show a QuickPick with the options
+    // Si encontramos archivos con prints, mostramos un QuickPick con las opciones
     if (filesWithPrints.length > 0) {
         const selected = await vscode.window.showQuickPick(filesWithPrints.map(file => ({ label: file.label, description: file.lineContent })), { placeHolder: 'Select a file and line to go to' });
         if (selected) {
             const file = filesWithPrints.find(f => f.label === selected.label);
             if (file) {
-                // Open the file in the editor and scroll to the line where the print is located
+                // Abrir el archivo en el editor y desplazarse a la línea donde se encuentra el print
                 const document = await vscode.workspace.openTextDocument(file.filePath);
                 const editor = await vscode.window.showTextDocument(document);
-                // Highlight all the lines containing 'print(' in the file
-                highlightPrintsInFile(editor, file.filePath);
-                // Scroll to the specific selected line
                 const position = new vscode.Position(file.lineNumber - 1, 0);
                 editor.revealRange(new vscode.Range(position, position));
                 editor.selection = new vscode.Selection(position, position);
@@ -101,27 +98,4 @@ async function checkPrintsInStagedFiles() {
         vscode.window.showInformationMessage('No print statements found in staged files.');
     }
 }
-// Function to highlight all lines containing 'print(' in the file
-async function highlightPrintsInFile(editor, filePath) {
-    const content = fs.readFileSync(filePath, 'utf8');
-    const lines = content.split('\n');
-    const printRanges = [];
-    // Loop through all the lines and find the ones containing `print(`
-    lines.forEach((line, index) => {
-        if (line.includes('print(')) {
-            const position = new vscode.Position(index, 0);
-            const range = new vscode.Range(position, position);
-            printRanges.push(range);
-        }
-    });
-    // Create a decoration to highlight all lines containing `print(`
-    const decorationType = vscode.window.createTextEditorDecorationType({
-        // backgroundColor: 'rgba(249, 173, 5, 0.6)', // Background color to highlight
-        backgroundColor: 'rgba(153, 39, 219, 0.3)', // Background color to highlight
-        // backgroundColor: 'rgba(255, 0, 0, 0.3)', // Background color to highlight
-        isWholeLine: true,
-    });
-    // Apply the decoration to all lines containing `print(`
-    editor.setDecorations(decorationType, printRanges);
-}
-//# sourceMappingURL=printChecker.js.map
+//# sourceMappingURL=printCheckerBueno.js.map

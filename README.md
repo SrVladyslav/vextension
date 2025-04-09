@@ -1,71 +1,51 @@
-# vextension README
+# Vextension
 
-This is the README for your extension "vextension". After writing up a brief description, we recommend including the following sections.
+**Vextension** is a Visual Studio Code extension that helps you find `print` statements in Python files that are staged for commit. It enables you to quickly jump to the line where a `print` statement is located, making it easier to clean up your code before committing.
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
-
-For example if there is an image subfolder under your extension project workspace:
-
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+- Search for `print` statements in all staged Python files.
+- Jump directly to the line where the `print` statement is found.
+- Highlight all `print` statements in the file for easy identification.
 
 ## Requirements
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
-
-## Extension Settings
-
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+- **VS Code**: This extension requires Visual Studio Code to be installed.
+- **Git**: You need to have Git installed and a repository set up in order to detect staged files.
+- **Python files**: This extension only works with Python files (`.py`).
 
 ## Known Issues
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+- No known issues at this time.
+- If you experience any problems, please report them via GitHub Issues.
 
 ## Release Notes
 
-Users appreciate release notes as you update your extension.
+### 0.0.1
 
-### 1.0.0
+- Initial release of **Vextension**.
+- Basic functionality to search for `print` statements in staged Python files.
 
-Initial release of ...
+## Usage
 
-### 1.0.1
+1. **Install the Extension**:
+   - Go to the Extensions view in Visual Studio Code (`Ctrl+Shift+X` or `Cmd+Shift+X`).
+   - Search for "Vextension" and click "Install".
 
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
+2. **Use the Extension**:
+   - Press `Ctrl+Shift+P` (Windows/Linux) or `Cmd+Shift+P` (Mac) to open the Command Palette.
+   - Search for the command `checkprints`.
+   - The extension will search for any `print` statements in your staged Python files and show them in a QuickPick.
+   - Select a file and line to jump directly to that location in the file.
+   - All `print` statements in the file will be highlighted.
 
 ---
 
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
 ## For more information
 
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
+- [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
+- [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
 
-**Enjoy!**
+---
+
+**Enjoy using Vextension!**
